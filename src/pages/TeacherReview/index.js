@@ -17,7 +17,10 @@ const tabList = [
         tab: '详情',
     }
 ];
-
+const contentList = {
+    tab1: <p style={{ height: '100px', overflow: 'auto' }}>content1</p>,
+    tab2: <p style={{ height: '100px', overflow: 'auto' }}>content2</p>,
+};
 
 // 评星描述
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
@@ -28,7 +31,6 @@ const TeacherReview = () => {
     const [text, setText] = useState('')
     const [stars, setStars] = useState()
     const [review, setReview] = useState('')
-    const [info, setInfo] = useState({})
     const onTab1Change = (key) => {
         setActiveTabKey1(key);
     };
@@ -39,18 +41,6 @@ const TeacherReview = () => {
     const sid = msg.get('sid')
     const pid = msg.get('pid')
 
-    const contentList = {
-        tab1: <p style={{ height: '94px', overflow: 'auto' }}>
-            {info.results}
-        </p>,
-        tab2: (
-            <div>
-                <p >开始时间：{info.startTime}</p>
-                <p >提交时间：{info.endTime}</p>
-                <p >运行时间：{info.runTime}</p>
-            </div>
-        ),
-    };
     // 获取记录
     useEffect(() => {
         async function getDetail (pid, sid) {
@@ -59,10 +49,10 @@ const TeacherReview = () => {
                 sid
             })
             const { comment, content, score } = res.data
+            console.log(typeof (score))
             setText(content)
             setStars(score)
             setReview(comment)
-            setInfo(res.data)
         }
         getDetail(pid, sid)
     }, [pid, sid])
@@ -143,7 +133,7 @@ const TeacherReview = () => {
                             </Card>
                         </div>
                         <div className='t_review-right-pre_next'>
-                            {/* <Button>下一个</Button> */}
+                            <Button>下一个</Button>
                         </div>
                     </div>
                 </Col>

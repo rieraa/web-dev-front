@@ -184,8 +184,7 @@ const TeacherList = () => {
                 }}
                 value={siftstate.class}
                 onChange={(value) => {
-                    const cname = classStore.getCnameById(value)
-                    setSiftState({ ...siftstate, class: value, className: cname })
+                    setSiftState({ ...siftstate, class: value })
                 }}
                 options={list}
             />

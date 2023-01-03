@@ -50,10 +50,6 @@ const StudentHome = () => {
             dataIndex: 'deliveryTime'
         },
         {
-            title: '截止时间',
-            dataIndex: 'endTime'
-        },
-        {
             title: '必做',
             dataIndex: 'mustdo',
             render: data => {
@@ -65,16 +61,15 @@ const StudentHome = () => {
         {
             title: '操作',
             render: data => {
-                if (data.endTime > data.deliveryTime) {
-                    return (
+                return (
+                    <Space size="middle">
                         <Button type="primary" shape="round" icon={<EyeOutlined />}
                             onClick={() => {
-                                console.log("date:", data.endTime > data.deliveryTime)
                                 navigate(`/publish/${data.pid}`)
                             }}
                         >查看</Button>
-                    )
-                } else return <Button type='primary' disabled>已截止</Button>
+                    </Space>
+                )
             }
         }
     ]

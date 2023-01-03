@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { getToken } from './token'
-
+import { getToken, clearToken } from './token'
+import { history } from './history'
 const http = axios.create({
     baseURL: 'http://localhost:8888',
-    // baseURL: 'http://43.139.156.26:20221',
+    // baseURL: 'https://service-152jj3l2-1315061125.gz.apigw.tencentcs.com/release',
     timeout: 5000
 })
 // 添加请求拦截器

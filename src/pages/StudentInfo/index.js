@@ -1,4 +1,4 @@
-import { UserOutlined } from '@ant-design/icons'
+import { InboxOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons'
 import { React } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/store'
@@ -8,13 +8,14 @@ import {
     Button,
     Form,
     Radio,
+    Select,
     Upload,
     Input,
     Avatar,
     Card,
     message
 } from 'antd'
-
+const { Option } = Select
 const formItemLayout = {
     labelCol: {
         span: 6,
@@ -23,7 +24,14 @@ const formItemLayout = {
         span: 5,
     },
 }
-
+// const { Option } = Select
+const normFile = (e) => {
+    console.log('Upload event:', e)
+    if (Array.isArray(e)) {
+        return e
+    }
+    return e?.fileList
+}
 
 const StudentInfo = () => {
     const { userStore } = useStore()

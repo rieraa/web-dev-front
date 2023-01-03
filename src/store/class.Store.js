@@ -51,15 +51,6 @@ class ClassStore {
         })
         return res
     }
-    // 通过cid获取班级名
-    getCnameById (cid) {
-        for (let i = 0; i < this.classes.length; i++) {
-            if (this.classes[i].cid === cid) {
-                return this.classes[i].cname
-            }
-        }
-        return null
-    }
 
 }
 

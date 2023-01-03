@@ -1,8 +1,13 @@
-import { Table, Card, Space, Tag, Button, Popconfirm, Modal, Form, Input, Drawer, DatePicker, Radio, Select, Breadcrumb } from 'antd'
+import { Table, Card, Space, Tag, Button, Popconfirm, Modal, Form, Input, Drawer, DatePicker, Radio, Select, Breadcrumb, Divider } from 'antd'
 import { React, useEffect, useState } from 'react'
 import { useStore } from '@/store'
 import { http } from '@/utils'
 import { Link } from 'react-router-dom'
+
+
+
+
+
 import './index.scss'
 import { AppstoreAddOutlined } from '@ant-design/icons'
 
@@ -20,27 +25,24 @@ const TeacherQuestion = () => {
   // 设置填写表单页面是否显示
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [isModaLooklOpen, setIsModalLookOpen] = useState(false)
-
   const [newQuestion, setNewQuestion] = useState({
     pbName: "",
     pbContent: ""
   })
 
+  //删除气泡框
+  const [open, setOpen] = useState(false)
   const [openPublish, setOpenPublish] = useState(false)
 
   const [confirmLoadingDel, setConfirmLoadingDel] = useState(false)
 
   //班级列表
-  const { classStore } = useStore()
+  const { registerStore, classStore } = useStore()
 
   //题目编号
   const [pid, setPid] = useState("")
   //题目名称
   const [pbName, setPbName] = useState("")
-  //题目内容
-  const [pbContent, setPbContent] = useState("")
-
 
   const onClosePublish = () => {
     setOpenPublish(false)
@@ -51,10 +53,14 @@ const TeacherQuestion = () => {
   const showDrawerPublish = (record) => {
     setPid(record.pid)
     setPbName(record.pbName)
+    console.log(pbName)
     getSelecters()
     setOpenPublish(true)
   }
 
+  const showPopconfirmDel = () => {
+    setOpen(true)
+  }
 
   // 删除题目
   const handleOkDel = async (record) => {
@@ -67,11 +73,15 @@ const TeacherQuestion = () => {
     console.log(list)
     fetchQuestionList()
     setConfirmLoadingDel(true)
-
+    setOpen(false)
     setConfirmLoadingDel(false)
 
   }
 
+  const handleCancelDel = () => {
+    console.log('取消删除')
+    setOpen(false)
+  }
 
 
   const addNewQuestion = async () => {
@@ -100,20 +110,6 @@ const TeacherQuestion = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false)
-  }
-
-  const handleLookOk = async () => {
-    setIsModalLookOpen(false)
-  }
-
-  const handleLookCancel = () => {
-    setIsModalLookOpen(false)
-  }
-
-  const showModaLook = (record) => {
-    setPbContent(record.pbContent)
-    setIsModalLookOpen(true)
-
   }
 
   async function fetchQuestionList () {
@@ -185,7 +181,6 @@ const TeacherQuestion = () => {
       span: 16,
     },
   }
-
   const tailLayout = {
     wrapperCol: {
       offset: 8,
@@ -202,7 +197,7 @@ const TeacherQuestion = () => {
       title: '题目编号',
       dataIndex: 'pid',
       key: 'pid',
-      sorter: (a, b) => a.pid - b.pid,
+
 
     },
     {
@@ -218,7 +213,6 @@ const TeacherQuestion = () => {
       title: '题目内容',
       dataIndex: 'pbContent',
       key: 'pid',
-
 
       ellipsis: 'true'
     },
@@ -252,8 +246,8 @@ const TeacherQuestion = () => {
       key: 'pid',
       render: (_, record) => (
         <Space size="middle">
-          <Button type='text' size='small' onClick={() => showModaLook(record)}>查看</Button>
-          <Button type='link' size='small' onClick={() => showDrawerPublish(record)}>发布</Button>
+          <Button type='text' size='small'>查看 {record.name}</Button>
+          <Button type='link' size='small' onClick={() => showDrawerPublish(record)}>发布 {record.name}</Button>
 
 
 
@@ -264,15 +258,20 @@ const TeacherQuestion = () => {
             okButtonProps={{
               loading: confirmLoadingDel,
             }}
+            onCancel={handleCancelDel}
           >
             <Button
               block="true"
               type="text"
+              onClick={showPopconfirmDel}
               danger
             >
               删除
             </Button>
           </Popconfirm>
+
+
+
         </Space >
       ),
     },
@@ -290,10 +289,9 @@ const TeacherQuestion = () => {
   return (
 
     <div className="class">
-      <Modal title="新增题目❤️" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} forceRender={true} getContainer={false} zIndex={9999} destroyOnClose={true} >
+      <Modal title="新增题目❤️" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} forceRender={true} getContainer={false} zIndex={9999} >
         <Form
           onFinish={onFinish}
-          preserve="false"
         >
           <Form.Item
             name="pbName"
@@ -329,12 +327,6 @@ const TeacherQuestion = () => {
 
 
         </Form>
-      </Modal>
-      <Modal title="题目详情" visible={isModaLooklOpen} onOk={handleLookOk} onCancel={handleLookCancel} >
-        <Card>
-
-          <p>{pbContent}</p>
-        </Card>
       </Modal>
 
       <div className="class-hd">
@@ -390,10 +382,11 @@ const TeacherQuestion = () => {
                 label="题目名称"
               >
                 <Input
-                  value={pbName}
+                  defaultValue={pbName}
                   disabled={true}
                 ></Input>
 
+                
               </Form.Item>
 
               <Form.Item
@@ -424,7 +417,7 @@ const TeacherQuestion = () => {
               >
                 <Radio.Group>
                   <Radio value="1"> 必做 </Radio>
-                  <Radio value="2"> 选做 </Radio>
+                  <Radio value="0"> 选做 </Radio>
                 </Radio.Group>
               </Form.Item>
 
