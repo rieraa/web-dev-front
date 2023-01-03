@@ -1,0 +1,27 @@
+.homework {
+  overflow: hidden;
+  &-content {
+    display: flex;
+    &-left {
+      flex: 5;
+      margin-right: 20px;
+      &-description {
+        height: 300px;
+      }
+      &-appraise {
+        height: 210px;
+      }
+    }
+
+    &-right {
+      flex: 8;
+      max-width: 750px;
+      height: 510px;
+    }
+  }
+  &-bottom {
+    display: flex;
+    padding-top: 12px;
+    justify-content: flex-end;
+  }
+}

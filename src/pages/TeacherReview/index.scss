@@ -1,0 +1,27 @@
+.t_review {
+  display: flex;
+  &-pre {
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      color: rgb(41, 41, 41);
+    }
+  }
+  &-right {
+    height: 500px;
+    &-box-bottom {
+      padding: 10px 0 0 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    &-pre_next {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 15px;
+    }
+  }
+  &-left {
+    height: 500px;
+    max-width: 720px;
+  }
+}
